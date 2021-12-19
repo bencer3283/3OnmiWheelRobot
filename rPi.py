@@ -1,6 +1,9 @@
 from gpiozero import Motor, Robot, DigitalInputDevice
 from time import sleep
 import serial
+from serial.serialposix import Serial
+
+blue = serial.Serial('/dev/rfcomm0')
 
 run = True
 
@@ -42,17 +45,21 @@ def right():
 if __name__ == '__main__': 
     while run:
         stop()
-        cmdFromHost = input()
+        cmdFromHost =  blue.read(1) #input()
         print(cmdFromHost)
         if cmdFromHost == 'quit':
             run = False
-        elif cmdFromHost == 'f':
+        elif cmdFromHost == b'f':
             forward()
-        elif cmdFromHost == 'b':
+            #print('forward')
+        elif cmdFromHost == b'b':
             backward()
-        elif cmdFromHost == 'l':
+            #print('backward')
+        elif cmdFromHost == b'l':
             left()
-        elif cmdFromHost == 'r':
+            #print('left')
+        elif cmdFromHost == b'r':
             right()
+            #print('right')
         
 
